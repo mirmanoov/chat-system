@@ -22,3 +22,4 @@ lazy val root = (project in file("."))
       "org.scalafx" %% "scalafxml-core-sfx8" % "0.5"
     )
   )
+javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
