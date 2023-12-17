@@ -9,32 +9,31 @@ import com.hep88.Upnp.AddPortMapping
 import scalafx.application.Platform
 import scalafx.collections.ObservableHashSet
 
-//data structure
-case class User(name: String, ref:ActorRef[ChatClient.Command])
+// Data structure
+case class User(name: String, ref: ActorRef[ChatClient.Command])
 
 object ChatClient {
-  //chat client protocol
+  // Chat client protocol
   sealed trait Command
   case object start extends Command
 
-  //find the chat server
+  // Find the chat server
   final case object FindTheServer extends Command
   private case class ListingResponse(listing: Receptionist.Listing) extends Command
 
-  //chat protocol
+  // Chat protocol
   case class Joined(lists: Iterable[User]) extends Command
   case class MemberList(lists: Iterable[User]) extends Command
-  //The reason for two list is because, we will only send the joined message for 1 time
-  //We have to keep the client updated about the new user joined
-
   case class StartJoin(name: String) extends Command
   case class SendMessageL(target: ActorRef[ChatClient.Command], content: String) extends Command
-  case class Message(msg: String, from: ActorRef[ChatClient.Command]) extends Command
+  case class Message(senderName: String, msg: String, from: ActorRef[ChatClient.Command]) extends Command
+  // New command for sending message to all users
+  case class SendMessageToAll(content: String) extends Command
 
-  //chat client value
+  // Chat client value
   var nameOpt: Option[String] = None
 
-  //Chat client hash set
+  // Chat client hash set
   val members = new ObservableHashSet[User]()
   val unreachables = new ObservableHashSet[Address]()
   unreachables.onChange { (ns, _) =>
@@ -49,33 +48,34 @@ object ChatClient {
     }
   }
 
-  var remoteOpt:Option[ActorRef[ChatServer.Command]] = None
+  var remoteOpt: Option[ActorRef[ChatServer.Command]] = None
   var defaultBehaviour: Option[Behavior[ChatClient.Command]] = None
 
-  def messageStarted(): Behavior[ChatClient.Command] = Behaviors.receive[ChatClient.Command]{
-    (context, message) =>
-      message match {
-        case SendMessageL(target, content) =>
-          target ! Message(content, context.self)
-          Behaviors.same
-        case Message(msg, frm) =>
-          Platform.runLater{
-            Client.control.addText(msg)
-          }
-          Behaviors.same
-        case MemberList(list: Iterable[User])=>
-          members.clear()
-          members ++= list
-          Behaviors.same
-      }
-  }.receiveSignal{
+
+  def messageStarted(): Behavior[ChatClient.Command] = Behaviors.receive[ChatClient.Command] { (context, message) =>
+    message match {
+      case SendMessageL(target, content) =>
+        target ! Message(nameOpt.getOrElse(""), content, context.self)
+        Behaviors.same
+      case SendMessageToAll(content) =>
+        members.foreach(member => member.ref ! Message(nameOpt.getOrElse(""), content, context.self))
+        Behaviors.same
+      case MemberList(list: Iterable[User]) =>
+        members.clear()
+        members ++= list
+        Behaviors.same
+      case Message(senderName, msg, frm) =>
+        Platform.runLater {
+          Client.control.addText(senderName, msg)
+        }
+        Behaviors.same
+    }
+  }.receiveSignal {
     case (context, PostStop) =>
-      for (name <- nameOpt;
-           remote <- remoteOpt) {
+      for (name <- nameOpt; remote <- remoteOpt) {
         remote ! ChatServer.Leave(name, context.self)
       }
       defaultBehaviour.getOrElse(Behaviors.same)
-
   }
 
 

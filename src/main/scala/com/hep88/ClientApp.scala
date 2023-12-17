@@ -7,23 +7,31 @@ import scalafx.scene.Scene
 import scalafxml.core.{FXMLLoader, NoDependencyResolver}
 import scalafx.Includes._
 
-
-object Client extends JFXApp{
+object Client extends JFXApp {
+  // Initializing the Actor System for ChatClient
   val greeterMain: ActorSystem[ChatClient.Command] = ActorSystem(ChatClient(), "ChatSystem")
   greeterMain ! ChatClient.start
+
+  // Loading the FXML and setting up the controller
   val loader = new FXMLLoader(null, NoDependencyResolver)
   loader.load(getClass.getResourceAsStream("view/MainWindow.fxml"))
   val border: scalafx.scene.layout.BorderPane = loader.getRoot[javafx.scene.layout.BorderPane]()
   val control = loader.getController[com.hep88.view.MainWindowController#Controller]()
   control.chatClientRef = Option(greeterMain)
-  //val cssResource = getClass.getResource("view/DarkTheme.css")
+
+  // Optionally, load a CSS stylesheet if you have one
+  // val cssResource = getClass.getResource("view/YourStyleSheet.css")
+
+  // Setting up the primary stage
   stage = new PrimaryStage() {
     scene = new Scene() {
       root = border
-      //stylesheets = List(cssResource.toExternalForm)
+      // Uncomment and modify the following line if you are using a stylesheet
+      // stylesheets = List(cssResource.toExternalForm)
     }
   }
 
+  // Handling the application close event
   stage.onCloseRequest = handle({
     greeterMain.terminate
   })

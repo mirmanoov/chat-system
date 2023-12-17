@@ -1,0 +1,8 @@
+2023.12.18 03:48:54 INFO  Started: Metals version 1.2.0 in folders '/Users/kambarmirmanov/12121122121212121/chat-system' for client Visual Studio Code 1.85.1.
+2023.12.18 03:48:55 WARN  Build server is not auto-connectable.
+2023.12.18 03:49:14 WARN  no build target for: /Users/kambarmirmanov/12121122121212121/chat-system/build.sbt
+2023.12.18 03:49:19 WARN  no build target for: /Users/kambarmirmanov/12121122121212121/chat-system/build.sbt
+2023.12.18 03:49:19 WARN  no build target for: /Users/kambarmirmanov/12121122121212121/chat-system/build.sbt
+2023.12.18 03:49:20 INFO  no build target found for /Users/kambarmirmanov/12121122121212121/chat-system/build.sbt. Using presentation compiler with project's scala-library version: 3.3.1
+Dec 18, 2023 3:49:26 AM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace

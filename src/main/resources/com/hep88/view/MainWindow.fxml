@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -13,7 +12,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hep88.view.MainWindowController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hep88.view.MainWindowController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
@@ -36,10 +35,11 @@
         </MenuBar>
     </top>
     <center>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="200.0" prefWidth="200.0">
             <children>
-                <GridPane layoutX="129.0" layoutY="81.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                <GridPane layoutX="10.0" layoutY="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
@@ -49,18 +49,23 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Label text="Name" />
+                        <Label text="Name" GridPane.columnIndex="0" />
                         <TextField fx:id="txtName" GridPane.columnIndex="1" />
-                        <Button mnemonicParsing="false" onAction="#handleJoin" text="Join" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button fx:id="btnJoin" mnemonicParsing="false" onAction="#handleJoin" text="Join" GridPane.columnIndex="2" />
                         <Label text="Status" GridPane.rowIndex="2" />
-                        <Label fx:id="lblStatus" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="lblStatus" text="Not joined" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                     </children>
                 </GridPane>
-                <ListView fx:id="listMessage" layoutX="321.0" layoutY="14.0" prefHeight="285.0" prefWidth="237.0" />
-                <ListView fx:id="listUser" layoutX="50.0" layoutY="147.0" prefHeight="141.0" prefWidth="200.0" />
-                <TextField fx:id="txtMessage" layoutX="110.0" layoutY="318.0" />
-                <Label layoutX="60.0" layoutY="322.0" text="Message:" />
-                <Button layoutX="274.0" layoutY="318.0" mnemonicParsing="false" onAction="#handleSend" text="Send" />
+                <ListView fx:id="listMessage" layoutX="320.0" layoutY="30.0" prefHeight="280.0" prefWidth="460.0" />
+                <ListView fx:id="listUser" layoutX="10.0" layoutY="150.0" prefHeight="160.0" prefWidth="300.0" />
+                <Label text="Users Online" layoutX="10.0" layoutY="130.0" />
+                <Label text="Chat messages" layoutX="320.0" layoutY="10.0" />
+
+                <TextField fx:id="txtMessage" layoutX="10.0" layoutY="360.0" prefWidth="770.0" prefHeight="50.0" promptText="Type your message here"  />
+
+                <!-- Reposition Send buttons and justify with space -->
+                <Button fx:id="btnSend" layoutX="10.0" layoutY="460.0" mnemonicParsing="false" onAction="#handleSend" text="Send" AnchorPane.bottomAnchor="50.0"/>
+                <Button fx:id="btnSendToAll" layoutX="100.0" layoutY="460.0" mnemonicParsing="false" onAction="#handleSendToAll" text="Send to Everyone" AnchorPane.bottomAnchor="50.0"/>
             </children>
         </AnchorPane>
     </center>
