@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ScalaCompilerConfiguration">
+    <profile name="sbt 1" modules="chat-system_82" />
+    <profile name="sbt 2" modules="ChatSystem">
+      <plugins>
+        <plugin path="C:\Users\tugudd\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scalamacros\paradise_2.12.16\2.1.1\paradise_2.12.16-2.1.1.jar" />
+      </plugins>
+    </profile>
+  </component>
+</project>
