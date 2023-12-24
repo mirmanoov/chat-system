@@ -116,6 +116,7 @@ class MainWindowController(private val txtName: TextField,
       listMessage.items = userChatMap(user)
       txtMessage.disable = false
       listGroup.getSelectionModel.clearSelection()
+      groupUsers.setText("")
     }
 
     else if (indices.size() > 1) {
@@ -123,10 +124,13 @@ class MainWindowController(private val txtName: TextField,
       groupName.disable = false
       txtMessage.disable = true
       listGroup.getSelectionModel.clearSelection()
+      groupUsers.setText("")
     }
 
-    else if (listGroup.getSelectionModel.getSelectedIndex < 0)
+    else if (listGroup.getSelectionModel.getSelectedIndex < 0) {
       txtMessage.disable = true
+      groupUsers.setText("")
+    }
   }
 
   def handleSelectedGroup(mouseEvent: MouseEvent): Unit = {
@@ -136,10 +140,18 @@ class MainWindowController(private val txtName: TextField,
       listMessage.items = groupChatMap(group)
       txtMessage.disable = false
       listUser.getSelectionModel.clearSelection()
+      var groupNames: String = "("
+
+      group.users.foreach(x => groupNames += s"${x.name}, ")
+      groupNames = groupNames.dropRight(2)
+      groupNames += ")"
+      groupUsers.setText(groupNames)
     }
 
-    else if (listUser.getSelectionModel.getSelectedIndices.size() == 0)
+    else if (listUser.getSelectionModel.getSelectedIndices.size() == 0) {
       txtMessage.disable = true
+      groupUsers.setText("")
+    }
   }
 
   // Update the handleSend method
